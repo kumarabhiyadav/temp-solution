@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useState } from "react";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -13,6 +14,7 @@ import AdapterDateFns from "@material-ui/lab/AdapterDateFns";
 
 import LocalizationProvider from "@material-ui/lab/LocalizationProvider";
 import DatePicker from "@material-ui/lab/DatePicker";
+import { BillModal, RideModel } from "./billModel";
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -24,12 +26,12 @@ const Transition = React.forwardRef(function Transition(
 });
 
 export default function AlertDialogSlide() {
-  const [open, setOpen] = React.useState(false);
-
-  const [BillDate, setValueBillDate] = React.useState<Date | null>(new Date());
-  const [productDate, setValueProductDate] = React.useState<Date | null>(
-    new Date()
-  );
+  let BillDetails: BillModal;
+  let listOfProduct: Array<RideModel> = [];
+  const [open, setOpen] = useState(false);
+  const [BillDate, setValueBillDate] = useState<Date | null>(new Date());
+  const [productDate, setValueProductDate] = useState<Date | null>(new Date());
+  const [productList, setProductValue] = useState(listOfProduct);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -42,6 +44,8 @@ export default function AlertDialogSlide() {
   const handleChange = (newValue: Date | null) => {
     setValueBillDate(newValue);
   };
+
+  function addRideToArray() {}
 
   return (
     <div>
@@ -59,7 +63,7 @@ export default function AlertDialogSlide() {
         <DialogTitle>{"New Bill"}</DialogTitle>
         <DialogContent>
           <div className="">
-            <div className="row">
+            <div className="row" style={{ alignItems: "center" }}>
               <Autocomplete
                 className="input-style"
                 disablePortal
@@ -106,68 +110,96 @@ export default function AlertDialogSlide() {
                   <TextField {...params} label="Truck Number" />
                 )}
               />{" "}
-              <Autocomplete
-                className="input-style"
-                style={{ width: "100%", margin: "0rem .5rem 0rem .0rem" }}
-                disablePortal
-                id="combo-box-demo"
-                options={["Abhinav", "Yadav"]}
-                sx={{ width: 300 }}
-                renderInput={(params) => (
-                  <TextField {...params} label="LR Number" />
-                )}
-              />{" "}
-              <LocalizationProvider dateAdapter={AdapterDateFns}>
-                <DatePicker
-                  label="Date"
-                  value={productDate}
-                  onChange={(newValue) => {
-                    setValueProductDate(newValue);
-                  }}
-                  renderInput={(params: any) => <TextField {...params} />}
+              <div style={{ width: "60rem", margin: "0rem .5rem 0rem .0rem" }}>
+                <TextField
+                  style={{ width: "100%" }}
+                  id="outlined-basic"
+                  label="L.R Number"
+                  variant="outlined"
                 />
-              </LocalizationProvider>
-              <Autocomplete
-                className="input-style"
-                style={{ width: "100%", margin: "0rem .5rem 0rem .0rem" }}
-                disablePortal
-                id="combo-box-demo"
-                options={["Abhinav", "Yadav"]}
-                sx={{ width: 300 }}
-                renderInput={(params) => (
-                  <TextField {...params} label="Quantity" />
-                )}
-              />{" "}
-              <Autocomplete
-                className="input-style"
-                style={{ width: "100%", margin: "0rem .5rem 0rem .0rem" }}
-                disablePortal
-                id="combo-box-demo"
-                options={["Abhinav", "Yadav"]}
-                sx={{ width: 300 }}
-                renderInput={(params) => <TextField {...params} label="Rate" />}
-              />
-              <Autocomplete
-                className="input-style"
-                style={{ width: "100%", margin: "0rem .5rem 0rem .0rem" }}
-                disablePortal
-                id="combo-box-demo"
-                options={["Abhinav", "Yadav"]}
-                sx={{ width: 300 }}
-                renderInput={(params) => (
-                  <TextField {...params} label="Particular" />
-                )}
-              />
-              <Autocomplete
-                className="input-style"
-                disablePortal
-                id="combo-box-demo"
-                options={["Abhinav", "Yadav"]}
-                sx={{ width: 300 }}
-                renderInput={(params) => (
-                  <TextField {...params} label="Amount" />
-                )}
-              />
+              </div>{" "}
+              <div style={{ width: "100%", margin: "0rem .5rem 0rem .0rem" }}>
+                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                  <DatePicker
+                    label="Date"
+                    value={productDate}
+                    onChange={(newValue) => {
+                      setValueProductDate(newValue);
+                    }}
+                    renderInput={(params: any) => <TextField {...params} />}
+                  />
+                </LocalizationProvider>
+              </div>
+              <div style={{ width: "80rem", margin: "0rem .5rem 0rem .0rem" }}>
+                <TextField
+                  style={{ width: "100%" }}
+                  id="outlined-basic"
+                  label="Quantity"
+                  type={"number"}
+                  variant="outlined"
+                />
+              </div>{" "}
+              <div style={{ width: "80rem", margin: "0rem .5rem 0rem .0rem" }}>
+                <TextField
+                  style={{ width: "100%" }}
+                  id="outlined-basic"
+                  label="Rate"
+                  type={"number"}
+                  variant="outlined"
+                />
+              </div>
+              <div style={{ width: "108rem", margin: "0rem .5rem 0rem .0rem" }}>
+                <TextField
+                  style={{ width: "100%" }}
+                  id="outlined-basic"
+                  label="Particular"
+                  variant="outlined"
+                  multiline
+                  rows={2}
+                />
+              </div>
+              <div style={{ width: "80rem", margin: "0rem .5rem 0rem .0rem" }}>
+                <TextField
+                  style={{ width: "100%" }}
+                  id="outlined-basic"
+                  label="Amount"
+                  variant="outlined"
+                />
+              </div>
+            </div>
+            <div
+              style={{
+                justifyContent: "end",
+                margin: "1rem 0rem",
+                textAlign: "end",
+              }}
+            >
+              <Button onClick={(click) => addRideToArray} variant="contained">
+                Add To Bill
+              </Button>
+            </div>
+
+            <div className="table-container">
+              <table>
+                <tr>
+                  <th>Truck Number</th>
+                  <th>LR Number</th>
+                  <th>Date</th>
+                  <th>Quantity</th>
+                  <th>Rate </th>
+                  <th>Particular </th>
+                  <th>Amount</th>
+                </tr>
+                <tr>
+                  <td>Truck Number</td>
+                  <td>LR Number</td>
+                  <td>Date</td>
+                  <td>Quantity</td>
+                  <td>Rate </td>
+                  <td>Particular </td>
+                  <td>Amount</td>
+                </tr>
+              </table>
             </div>
           </div>
         </DialogContent>

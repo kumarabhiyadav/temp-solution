@@ -1,4 +1,4 @@
-interface ProductModel {
+interface RideModel {
   truckNumber: string;
   lrNo: string;
   rate: number;
@@ -17,8 +17,7 @@ interface BillModal {
   advance: number;
   depart: string;
   destination: string;
-  product:Array<ProductModel>
+  product: Array<RideModel>;
 }
 
-
-export type { BillModal };
+export type { BillModal, RideModel };
